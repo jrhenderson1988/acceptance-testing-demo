@@ -13,15 +13,12 @@ import org.springframework.http.HttpStatus;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class UserControllerIT {
-  @LocalServerPort private int port;
-
-  @Autowired private TestRestTemplate restTemplate;
-
   private final BasicJsonTester json = new BasicJsonTester(getClass());
+  @LocalServerPort private int port;
+  @Autowired private TestRestTemplate restTemplate;
 
   @Test
   void gettingUserShouldReturnHendog() {
-
     var response =
         restTemplate.getForEntity("http://localhost:%d/test".formatted(port), String.class);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
