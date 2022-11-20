@@ -7,16 +7,38 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.7.5</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath/>
   </parent>
+
   <groupId>com.example</groupId>
   <artifactId>acceptance-testing-demo</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>acceptance-testing-demo</name>
   <description>acceptance-testing-demo</description>
+
   <properties>
     <java.version>17</java.version>
+    <skipUnitTests>false</skipUnitTests>
+    <skipIntegrationTests>false</skipIntegrationTests>
   </properties>
+
+  <profiles>
+    <profile>
+      <id>unit</id>
+      <properties>
+        <skipUnitTests>false</skipUnitTests>
+        <skipIntegrationTests>true</skipIntegrationTests>
+      </properties>
+    </profile>
+    <profile>
+      <id>integration</id>
+      <properties>
+        <skipUnitTests>true</skipUnitTests>
+        <skipIntegrationTests>false</skipIntegrationTests>
+      </properties>
+    </profile>
+  </profiles>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -72,6 +94,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M5</version>
+        <configuration>
+          <skipTests>${skipUnitTests}</skipTests>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -85,6 +110,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <skipTests>${skipIntegrationTests}</skipTests>
+        </configuration>
       </plugin>
     </plugins>
   </build>
